@@ -6,6 +6,7 @@
 #include <thrift/server/TSimpleServer.h>
 #include <thrift/transport/TServerSocket.h>
 #include <thrift/transport/TBufferTransports.h>
+#include <iostream>
 
 using namespace ::apache::thrift;
 using namespace ::apache::thrift::protocol;
@@ -43,6 +44,9 @@ int main(int argc, char **argv) {
   ::std::shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
 
   TSimpleServer server(processor, serverTransport, transportFactory, protocolFactory);
+  
+  std::cout << "Starting the match server..." << std::endl;
+  
   server.serve();
   return 0;
 }
