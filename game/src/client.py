@@ -9,7 +9,7 @@ from thrift.protocol import TBinaryProtocol
 from sys import stdin
 
 
-def main():
+def operate(op, user_id, user_name, user_score):
     # Make socket
     transport = TSocket.TSocket('localhost', 9090)
 
@@ -22,12 +22,26 @@ def main():
     # Create a client to use the protocol encoder
     client = Match.Client(protocol)
 
+    user = User(user_id, user_name, user_score) # create a user object
+
     # Connect!
     transport.open()
 
-    user = User(1, "Hector", 1000)
-    client.add_user(user, "")
+    if op == 'add':
+        client.add_user(user, "")               # add user
+    elif op == "remove":
+        client.remove_user(user, "")            # remove user
 
 
     # Close!
     transport.close()
+
+
+def main():
+    for line in stdin:
+        op, user_id, user_name, user_score = line.strip().split()
+        operate(op, int(user_id), user_name, int(user_score))
+
+
+if __name__ == '__main__':
+    main()
